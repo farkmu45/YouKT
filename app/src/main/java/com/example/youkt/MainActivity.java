@@ -3,7 +3,6 @@ package com.example.youkt;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -18,14 +17,16 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Kedua variabel ini digunakan untuk menyediakan pilihan bank beserta dengan no. rekening untuk masing masing bank
     private String[] banks = {"BRI", "BNI", "BSI", "Mandiri"};
     private String[] bankNumbers = {"12398092", "43278923", "43298434", "129742197"};
 
     TextView txtBank, txtBankNumber, txtTotalPayment, txtAdminCost, txtUktCost;
-    TextInputLayout inputFirstName, inputLastName, inputStudentNumber, inputAddress, inputPayment;
+    TextInputLayout inputFirstName, inputLastName, inputStudentNumber, inputAddress;
     Button btnEstimate, btnConfirmation;
     AutoCompleteTextView dropdown;
 
+    // Ketiga variabel ini digunakan untuk menyimpan data biaya ukt + mencatat sudah berapa kali button ditekan
     private int ukt;
     private int adminCost;
     private int step = 0;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             String address = inputAddress.getEditText().getText().toString();
             String bank = dropdown.getEditableText().toString();
 
+            //  Disini dicek, apakah semua data telah diisi atau belum
             if (firstName.isEmpty() || lastName.isEmpty() || studentNumber.isEmpty() || address.isEmpty() || bank.isEmpty()) {
                 Toast.makeText(this, "Harap isi semua data", Toast.LENGTH_SHORT).show();
             } else {
@@ -69,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnConfirmation.setOnClickListener(view -> {
-
             if (step == 0) {
                 Toast.makeText(this, "Silahkan lakukan pembayaran berdasarkan info yang sudah ditampilkan", Toast.LENGTH_SHORT).show();
                 btnEstimate.setEnabled(false);
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // Method ini digunakan untuk mengulang dari awal
     private void reset() {
         step = 0;
         txtBank.setText("");
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         inputFirstName.requestFocus();
     }
 
+    // Method ini digunakan untuk mengubah data ukt berdasarkan input yang sudah dimasukkan oleh pengguna
     private void setInformation() {
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Method ini digunakan untuk menentukan ukt
     private void calculateUKT(String nim) {
         if (nim.startsWith("4")) {
             ukt = 600000;
